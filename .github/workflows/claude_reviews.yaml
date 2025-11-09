@@ -1,0 +1,62 @@
+name: Claude Code
+
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  claude-help:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+      issues: read
+      id-token: write
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 1
+      - name: Run Claude HelpList
+        uses: anthropics/claude-code-action@beta
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          custom_prompt: |
+            Please respond in Korean.
+            Follow oure coding standard.
+            Use Code Langeuage used in the repository.
+
+  claude-review:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+      issues: read
+      id-token: write
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 1
+
+      - name: Run Claude Code Review
+        uses: anthropics/claude-code-action@beta
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }} 
+          
+          direct_prompt: |
+            Please respond in Korean.
+            Please provide a detailed review of the code with the following format:
+              - Code Review:
+                - Code Quality
+                - Code Best Practices
+                - Potential Bugs or Issues
+                - Performance Considerations
+              - Code Suggestions:
+                - Code Improvements
+              - Code Comments:
+                - Code Security
+                - Code Comments
+                - Code Documentation
