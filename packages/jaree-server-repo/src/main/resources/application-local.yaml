@@ -1,0 +1,23 @@
+spring:
+  config:
+    import:
+    - 'optional:file:env/local.env[.properties]'
+
+  devtools:
+    restart:
+      enabled: true
+      additional-paths: src/main/java
+      exclude: static/**,public/**,templates/**
+    add-properties: true
+
+  data:
+    mongodb:
+      uri: mongodb://${MONGO_HOST}:${MONGO_PORT}/${MONGO_DATABASE}
+      username: ${MONGO_USERNAME}
+      password: ${MONGO_PASSWORD}
+
+  neo4j:
+    uri: neo4j://${NEO4J_HOST}:${NEO4J_PORT}
+    authentication:
+      username: ${NEO4J_USERNAME}
+      password: ${NEO4J_PASSWORD}

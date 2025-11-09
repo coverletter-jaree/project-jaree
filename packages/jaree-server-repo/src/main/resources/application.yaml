@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: api
+
+  security:
+    user:
+      name: admin # temp
+      password: admin # temp
+
+management:
+  endpoints:
+    health:
+      show-details: when-authorized
