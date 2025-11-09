@@ -22,7 +22,7 @@ jobs:
         uses: anthropics/claude-code-action@beta
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
-          custom_prompt: |
+          direct_prompt: |
             Please respond in Korean.
             Follow oure coding standard.
             Use Code Langeuage used in the repository.
