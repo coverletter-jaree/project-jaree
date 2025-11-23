@@ -1,1 +1,12 @@
-{}
+{
+  "trashOption": "system",
+  "newFileLocation": "current",
+  "attachmentFolderPath": "./",
+  "userIgnoreFilters": [
+    "node_modules/",
+    "packages/jaree-client-repo/node_modules/",
+    "documents/templates/"
+  ],
+  "promptDelete": false,
+  "alwaysUpdateLinks": true
+}
