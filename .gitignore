@@ -127,3 +127,8 @@ build/
 
 # Turbo
 .turbo
+
+# Obsidian
+.obsidian/workspace.json
+.obsidian/themes/
+.obsidian/appearance.json
