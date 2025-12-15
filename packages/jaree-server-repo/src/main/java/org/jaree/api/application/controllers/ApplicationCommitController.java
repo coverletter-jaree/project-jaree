@@ -1,5 +1,7 @@
 package org.jaree.api.application.controllers;
 
+import org.jaree.api.application.entity.ApplicationVersion;
+import org.jaree.api.application.input.ApplicationContextSaveInputDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,17 +15,17 @@ import org.springframework.web.bind.annotation.RestController;
 public class ApplicationCommitController {
 
   @GetMapping("/{commitId}")
-  public ResponseEntity<Object> getApplicationVersion(
+  public ResponseEntity<ApplicationVersion> getApplicationVersion(
     @PathVariable("applicationId") String applicationId,
     @PathVariable("commitId") String commitId) {
     return ResponseEntity.ok().build();
   }
 
   @PostMapping("/{commitId}/autosave")
-  public ResponseEntity<Object> createApplication(
+  public ResponseEntity<Void> createApplication(
     @PathVariable("applicationId") String applicationId,
     @PathVariable("commitId") String commitId,
-    @RequestBody Object body
+    @RequestBody ApplicationContextSaveInputDTO body
   ) {
     return ResponseEntity.ok().build();
   }

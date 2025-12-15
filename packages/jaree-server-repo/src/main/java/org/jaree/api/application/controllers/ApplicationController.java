@@ -2,6 +2,7 @@ package org.jaree.api.application.controllers;
 
 import java.util.List;
 
+import org.jaree.api.application.output.ApplicationListOutputDTOItem;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,12 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class ApplicationController {
 
   @GetMapping()
-  public ResponseEntity<List<Object>> getApplications() {
+  public ResponseEntity<List<ApplicationListOutputDTOItem>> getApplications() {
     return ResponseEntity.ok().build();
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<Object> deleteApplication(@PathVariable("id") String id) {
+  public ResponseEntity<Void> deleteApplication(@PathVariable("id") String id) {
     return ResponseEntity.ok().build();
   }
 }
