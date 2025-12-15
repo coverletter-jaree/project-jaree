@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Node("User")
+@Node("JsonData")
 public class JsonData {
     @Id
     @GeneratedValue
