@@ -1,6 +1,9 @@
 package org.jaree.config;
 
+import java.util.Objects;
+
 import org.springframework.context.annotation.Configuration;
+import org.springframework.lang.NonNull;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -12,7 +15,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
    * Global prefix for API versioning
    */
   @Override
-  public void configurePathMatch(PathMatchConfigurer configurer) {
-    configurer.addPathPrefix(String.format("/api/%s", API_VERSION), c -> true);
+  public void configurePathMatch(@NonNull PathMatchConfigurer configurer) {
+    String apiPrefixWithVersion = String.format("/api/%s", API_VERSION);
+    configurer.addPathPrefix(Objects.requireNonNull(apiPrefixWithVersion), c -> true);
   }
 }
