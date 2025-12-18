@@ -2,7 +2,7 @@ package org.jaree.api.application.controllers;
 
 import java.util.List;
 
-import org.jaree.api.application.output.ApplicationListOutputDTOItem;
+import org.jaree.api.application.outputs.ApplicationListOutputDTOItem;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,7 +1,7 @@
 package org.jaree.api.application.controllers;
 
 import org.jaree.api.application.entity.ApplicationVersion;
-import org.jaree.api.application.input.ApplicationContextSaveInputDTO;
+import org.jaree.api.application.inputs.ApplicationContextSaveInputDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
