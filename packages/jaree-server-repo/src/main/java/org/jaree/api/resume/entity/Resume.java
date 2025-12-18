@@ -1,7 +1,6 @@
 package org.jaree.api.resume.entity;
 
 import java.util.List;
-import java.util.Map;
 
 import org.jaree.api.user.entity.User;
 import org.springframework.data.neo4j.core.schema.GeneratedValue;
