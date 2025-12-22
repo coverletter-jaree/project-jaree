@@ -12,10 +12,7 @@ public class ErrorResponse {
     private final LocalDateTime timestamp;
 
     public ErrorResponse(final ErrorCode errorCode) {
-        this.statusCode = errorCode.getHttpStatus().value();
-        this.code = errorCode.getCode();
-        this.message = errorCode.getMessage();
-        this.timestamp = LocalDateTime.now();
+        this(errorCode, null);
     }
 
     public ErrorResponse(final ErrorCode errorCode, final String message) {
