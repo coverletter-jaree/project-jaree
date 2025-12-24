@@ -79,3 +79,72 @@ DTO와 Entity 사이의 변환 로직을 캡슐화한 인터페이스입니다.
 
 1. **Input (요청)**: `InputDTO`가 `DTOConverter`에 전달되어 `Entity` 생성을 위한 데이터(`EntityRecord`)로 변환됩니다.
 2. **Output (응답)**: `Entity`에서 추출된 데이터(`EntityRecord`)가 `DTOConverter`를 통해 `OutputDTO`로 변환되어 클라이언트에게 반환됩니다.
+
+## 구현 및 사용 예시
+
+다음은 `DTOConverter`를 사용하여 실제 변환 로직을 구현하는 예시입니다.
+
+### 1. Entity 정의
+
+변환 대상이 될 Entity들을 정의합니다. 여기서는 `Test1stEntity`와 `Test2ndEntity` 두 개의 Entity가 존재한다고 가정합니다.
+
+```java
+static class Test1stEntity {
+    private final String name;
+
+    public Test1stEntity(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+}
+
+static class Test2ndEntity {
+    private final int age;
+
+    public Test2ndEntity(int age) {
+        this.age = age;
+    }
+
+    public int getAge() {
+        return age;
+    }
+}
+```
+
+### 2. DTO 및 EntityRecord 정의
+
+`DTO` 클래스를 상속받아 DTO를 정의하고, 내부 `static record`로 `EntityRecord`를 정의하여 Entity와의 데이터 매핑 구조를 잡습니다.
+
+```java
+static class TestDTO extends DTO<TestDTO.EntityRecord> {
+    private final String name;
+    private final int age;
+
+    public TestDTO(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    // Getters...
+
+    // EntityRecord 정의: 변환에 필요한 Entity들을 묶는 레코드
+    record EntityRecord(Test1stEntity test1stEntity, Test2ndEntity test2ndEntity) {
+    }
+}
+```
+
+### 3. 변환 사용
+
+```java
+DTOConverter converter = new TestConverter();
+
+// Entity -> DTO
+TestDTO.EntityRecord record = new TestDTO.EntityRecord(new Test1stEntity("Jaree"), new Test2ndEntity(20));
+TestDTO dto = converter.convert(record);
+
+// DTO -> Entity
+TestDTO.EntityRecord entityResult = converter.convert(dto);
+```
