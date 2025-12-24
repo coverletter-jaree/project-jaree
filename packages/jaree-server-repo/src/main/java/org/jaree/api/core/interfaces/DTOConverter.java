@@ -27,7 +27,7 @@ public interface DTOConverter {
   <EntityRecord, T extends DTO<EntityRecord>> EntityRecord convert(T dto);
 
   /**
-   * @apiNote List<Entity>를 List<DTO>로 변환
+   * @apiNote List<EntityRecord>를 List<DTO>로 변환
    * @param records
    * @return
    */

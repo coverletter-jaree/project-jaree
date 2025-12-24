@@ -160,7 +160,6 @@ class DTOConverterTest {
             new Test2ndEntity(10),
             new Test2ndEntity(20)
         );
-
         
         // When
         List<TestDTO.EntityRecord> records = List.of(
