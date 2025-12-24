@@ -15,7 +15,7 @@ public record CustomUserDetails(
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return java.util.Collections.emptyList();
     }
 
     @Override

@@ -2,6 +2,7 @@ package org.jaree.api.auth.filter;
 
 import java.io.IOException;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,6 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.jaree.api.auth.dto.CustomUserDetails;
 import org.jaree.api.user.entity.User;
 import org.jaree.api.user.repository.UserRepository;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -19,30 +21,35 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
+@Profile("local")
 public class AuthFilter extends OncePerRequestFilter {
+    private static final Long MOCK_USER_ID = 0L;
+    private static final String MOCK_USER_NAME = "MockUser";
 
     private final UserRepository userRepository;
+    private User mockUser;
+
+    @PostConstruct
+    public void init() {
+        this.mockUser = userRepository.findById(MOCK_USER_ID)
+            .orElseGet(() -> {
+                User newUser = new User();
+                newUser.setId(MOCK_USER_ID);
+                newUser.setName(MOCK_USER_NAME);
+                return userRepository.save(newUser);
+            });
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
         throws ServletException, IOException {
-
-        // 1. Find or create mock user
-        User user = userRepository.findById(0L)
-            .orElseGet(() -> {
-                User newUser = new User();
-                newUser.setId(0L);
-                newUser.setName("MockUser");
-                return userRepository.save(newUser);
-            });
-
-        // 2. Wrap the database entity in your Principal
+        // 1. Wrap the database entity in principal
         CustomUserDetails principal = CustomUserDetails.builder()
-            .id(user.getId())
-            .name(user.getName())
+            .id(mockUser.getId())
+            .name(mockUser.getName())
             .build();
 
-        // 3. Set security context
+        // 2. Set security context
         UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
             principal, null, principal.getAuthorities()
         );
