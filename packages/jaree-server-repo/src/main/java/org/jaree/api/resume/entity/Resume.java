@@ -1,7 +1,6 @@
 package org.jaree.api.resume.entity;
 
 import java.util.List;
-import java.util.Map;
 
 import org.jaree.api.user.entity.User;
 import org.springframework.data.neo4j.core.schema.GeneratedValue;
@@ -33,4 +32,4 @@ public class Resume {
 
     @Relationship(direction = Relationship.Direction.OUTGOING)
     private List<ResumeRelationship> data;     // 이력서 저장 데이터(내용) 목록
-}
+    }
