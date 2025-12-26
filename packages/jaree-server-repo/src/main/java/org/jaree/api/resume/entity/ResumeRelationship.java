@@ -13,11 +13,11 @@ import lombok.Data;
 @AllArgsConstructor
 @RelationshipProperties
 public class ResumeRelationship {
-    @Id 
-    @GeneratedValue 
-    private Long id;
-
     private final ResumeRelationshipType type;  // 관계 종류 (이력서 항목)
+
+    @Id
+    @GeneratedValue
+    private Long id;
 
     @TargetNode
     private final JsonData data;    // 이력서 저장 데이터
