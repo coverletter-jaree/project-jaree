@@ -5,7 +5,6 @@
   "private": true,
   "scripts": {
     "local": "./gradlew build --continuous & ./gradlew bootRun --args='--spring.profiles.active=local'",
-    "server:local": "./gradlew build --continuous & ./gradlew bootRun --args='--spring.profiles.active=local'",
     "build": "./gradlew build",
     "test": "./gradlew test"
   },

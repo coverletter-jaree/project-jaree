@@ -6,8 +6,7 @@
   ],
   "scripts": {
     "local": "turbo local --parallel",
-    "start": "turbo local --parallel",
-    "server:local": "turbo server:local"
+    "start": "turbo local --parallel"
   },
   "packageManager": "pnpm@10.11.1",
   "devDependencies": {
