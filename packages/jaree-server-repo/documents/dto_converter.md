@@ -73,7 +73,7 @@ DTO와 Entity 사이의 변환 로직을 캡슐화한 인터페이스입니다.
 ### 3. Entity & EntityRecord
 
 - **Entity**: 실제 비즈니스 로직과 데이터베이스 매핑을 담당하는 도메인 객체입니다.
-- **EntityRecord**: DTO와 Entity 사이에서 데이터를 전달하는 불변(Immutable) 데이터 위반(Record) 패턴을 사용할 수 있음을 시사합니다 (설계상 참조).
+- **EntityRecord**: DTO를 생성하기 위해서 필수적으로 필요한 Entity들을 묶는 레코드, 또는 DTO를 통해서 추출이 가능한 데이터를 묶는 레코드입니다.
 
 ## 변환 흐름 (Conversion Flow)
 
