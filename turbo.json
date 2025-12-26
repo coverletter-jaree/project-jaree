@@ -11,6 +11,12 @@
     "test": {
       "dependsOn": ["^build"],
       "outputs": ["coverage/**"]
+    },
+    "server:local": {
+      "cache": false,
+      "persistent": true,
+      "interactive": true,
+      "env": ["JAVA_HOME", "GRADLE_OPTS", "PATH"]
     }
   },
   "ui": "tui"

@@ -1,20 +1,22 @@
 {
-	"folders": [
-		{
-			"path": "."
-		},
-		{
-			"path": "packages/.github"
-		},
-		{
-			"path": "packages/jaree-client-repo"
-		},
-		{
-			"path": "packages/jaree-manifest-repo"
-		},
-		{
-			"path": "packages/jaree-server-repo"
-		}
-	],
-  "settings": {}
+  "folders": [
+    {
+      "path": "."
+    },
+    {
+      "path": "packages/.github"
+    },
+    {
+      "path": "packages/jaree-client-repo"
+    },
+    {
+      "path": "packages/jaree-manifest-repo"
+    },
+    {
+      "path": "packages/jaree-server-repo"
+    }
+  ],
+  "settings": {
+    "java.compile.nullAnalysis.mode": "automatic"
+  }
 }
