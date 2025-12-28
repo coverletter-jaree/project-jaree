@@ -20,10 +20,6 @@ public class ResumeRelationship {
 
     private final ResumeRelationshipType type;  // 관계 종류 (이력서 항목)
 
-    @Id
-    @GeneratedValue
-    private Long id;
-
     @TargetNode
     private final JsonData data;    // 이력서 저장 데이터
 }

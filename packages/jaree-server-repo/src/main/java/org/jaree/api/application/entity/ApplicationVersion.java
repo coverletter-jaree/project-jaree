@@ -2,12 +2,6 @@ package org.jaree.api.application.entity;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.neo4j.core.schema.GeneratedValue;
