@@ -7,14 +7,16 @@ import java.util.Objects;
 import org.jaree.api.company.entity.Company;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
+@Getter
 @AllArgsConstructor
 public class CompanyOutputDTO {
-    Long id;
-    String name;
-    String description;
-    String logoUrl;
-    List<String> categories;
+    private Long id;
+    private String name;
+    private String description;
+    private String logoUrl;
+    private List<String> categories;
 
     public static CompanyOutputDTO from(Company company) {
 

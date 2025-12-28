@@ -8,25 +8,28 @@ import org.jaree.api.application.entity.ApplicationQuestion;
 import org.jaree.api.jobopening.entity.JobOpening;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
+@Getter
 @AllArgsConstructor
 public class JobOpeningWithoutCompanyOutputDTO {
-    Long id;
-    String title;
-    String description;
-    String contentS3Url;
-    String imageUrl;
-    LocalDateTime startsAt;
-    LocalDateTime endsAt;
-    LocalDateTime createdAt;
-    List<JobOpeningWithoutCompanyOutputDTO.ApplicationQuestionDTO> questions;
+    private Long id;
+    private String title;
+    private String description;
+    private String contentS3Url;
+    private String imageUrl;
+    private LocalDateTime startsAt;
+    private LocalDateTime endsAt;
+    private LocalDateTime createdAt;
+    private List<ApplicationQuestionDTO> questions;
 
+    @Getter
     @AllArgsConstructor
     public static class ApplicationQuestionDTO{
-        Long id;
-        String content;
-        String description;
-        Integer order;
+        private Long id;
+        private String content;
+        private String description;
+        private Integer order;
 
         public static ApplicationQuestionDTO from(ApplicationQuestion question){
             if(question == null) return null;

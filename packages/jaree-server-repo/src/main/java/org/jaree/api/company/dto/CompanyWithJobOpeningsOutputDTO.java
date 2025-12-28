@@ -13,12 +13,12 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class CompanyWithJobOpeningsOutputDTO {
-    Long id;
-    String name;
-    String description;
-    String logoUrl;
-    List<String> categories;
-    List<JobOpeningWithoutCompanyOutputDTO> jobOpenings;
+    private Long id;
+    private String name;
+    private String description;
+    private String logoUrl;
+    private List<String> categories;
+    private List<JobOpeningWithoutCompanyOutputDTO> jobOpenings;
 
     public static CompanyWithJobOpeningsOutputDTO from(Company company){
 
