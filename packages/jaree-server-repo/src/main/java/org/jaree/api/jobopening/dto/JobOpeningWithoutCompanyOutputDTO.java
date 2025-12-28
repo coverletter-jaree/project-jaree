@@ -41,7 +41,7 @@ public class JobOpeningWithoutCompanyOutputDTO {
     public static JobOpeningWithoutCompanyOutputDTO from(JobOpening jobOpening){
         if(jobOpening == null) return null;
 
-        List<JobOpeningWithoutCompanyOutputDTO.ApplicationQuestionDTO> questions = jobOpening.getQuestions() == null
+        List<ApplicationQuestionDTO> questions = jobOpening.getQuestions() == null
             ? List.of()
             : jobOpening.getQuestions().stream()
                 .filter(Objects::nonNull)
