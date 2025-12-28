@@ -11,3 +11,6 @@ management:
   endpoints:
     health:
       show-details: when-authorized
+logging:
+  level:
+    org.springframework.data.neo4j.cypher: DEBUG
