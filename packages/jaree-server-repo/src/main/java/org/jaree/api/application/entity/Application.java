@@ -1,6 +1,7 @@
 package org.jaree.api.application.entity;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 
 import org.jaree.api.application.enums.ApplicationStatus;
@@ -12,6 +13,7 @@ import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
+import org.springframework.data.neo4j.core.support.UUIDStringGenerator;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,8 +31,8 @@ import lombok.NoArgsConstructor;
 @Node("Application")
 public class Application {
     @Id
-    @GeneratedValue
-    private Long id;
+    @GeneratedValue(generatorClass = UUIDStringGenerator.class)
+    private String id;
 
     private String title;               // 자소서 제목
 
@@ -57,4 +59,15 @@ public class Application {
 
     @Relationship(type = "HAS_VERSION", direction = Relationship.Direction.OUTGOING)
     private List<ApplicationVersion> versions;  // 자소서 커밋 리스트(leaf node가 여러개일 수 있기 때문에 list)
+
+    /*
+     * Custom Getters
+     */
+    public List<ApplicationQuestion> getQuestions() {
+        return questions == null ? Collections.emptyList() : questions;
+    }
+
+    public List<ApplicationVersion> getVersions() {
+        return versions == null ? Collections.emptyList() : versions;
+    }
 }

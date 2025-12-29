@@ -28,4 +28,13 @@ public class ApplicationQuestionSimpleDTO {
             .order(question.getOrder())
             .build();
     }
+
+    public ApplicationQuestion toEntity() {
+        return ApplicationQuestion.builder()
+                .id(id)
+                .content(content)
+                .description(description)
+                .order(order)
+                .build();
+    }
 }
