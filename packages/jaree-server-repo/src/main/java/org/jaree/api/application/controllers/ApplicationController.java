@@ -2,6 +2,7 @@ package org.jaree.api.application.controllers;
 
 import java.util.List;
 
+import org.jaree.api.application.entity.Application;
 import org.jaree.api.application.outputs.ApplicationListOutputDTOItem;
 import org.jaree.api.application.services.ApplicationService;
 import org.springframework.http.ResponseEntity;
@@ -24,12 +25,13 @@ public class ApplicationController {
   @GetMapping()
   @PreAuthorize("hasRole('USER')")
   public ResponseEntity<List<ApplicationListOutputDTOItem>> getApplications() {
+    List<Application> applications = applicationService.getApplications();
     return ResponseEntity.ok().build();
   }
 
   @DeleteMapping("/{id}")
   public ResponseEntity<Void> deleteApplication(@PathVariable("id") String id) {
-    boolean isDeleted = applicationService.deleteApplication(Long.valueOf(id));
+    boolean isDeleted = applicationService.deleteApplication(id);
     if (!isDeleted) {
       return ResponseEntity.notFound().build();
     }
