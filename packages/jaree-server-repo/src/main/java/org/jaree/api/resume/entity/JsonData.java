@@ -7,6 +7,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
+import org.springframework.data.neo4j.core.support.UUIDStringGenerator;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,8 +21,8 @@ import lombok.NoArgsConstructor;
 @Node("JsonData")
 public class JsonData {
     @Id
-    @GeneratedValue
-    private Long id;
+    @GeneratedValue(generatorClass = UUIDStringGenerator.class)
+    private String id;
 
     private String s3Url;   // json 데이터 저장한 S3 url
 
