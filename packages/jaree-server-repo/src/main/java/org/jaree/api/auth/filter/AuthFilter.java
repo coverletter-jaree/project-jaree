@@ -23,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Profile("local")
 public class AuthFilter extends OncePerRequestFilter {
-    private static final Long MOCK_USER_ID = 0L;
+    private static final String MOCK_USER_ID = "MockUserId";
     private static final String MOCK_USER_NAME = "MockUser";
 
     private final UserRepository userRepository;
