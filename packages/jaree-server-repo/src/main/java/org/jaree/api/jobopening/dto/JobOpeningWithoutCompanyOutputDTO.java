@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
-import org.jaree.api.application.entity.ApplicationQuestion;
+import org.jaree.api.application.dto.ApplicationQuestionOutputDTO;
 import org.jaree.api.jobopening.entity.JobOpening;
 
 import lombok.AllArgsConstructor;
@@ -21,34 +21,16 @@ public class JobOpeningWithoutCompanyOutputDTO {
     private LocalDateTime startsAt;
     private LocalDateTime endsAt;
     private LocalDateTime createdAt;
-    private List<ApplicationQuestionDTO> questions;
-
-    @Getter
-    @AllArgsConstructor
-    public static class ApplicationQuestionDTO{
-        private String id;
-        private String content;
-        private String description;
-        private Integer order;
-
-        public static ApplicationQuestionDTO from(ApplicationQuestion question){
-            if(question == null) return null;
-
-            return new ApplicationQuestionDTO(
-                question.getId(), question.getContent(),
-                question.getDescription(), question.getOrder());
-
-        }
-    }
+    private List<ApplicationQuestionOutputDTO> questions;
 
     public static JobOpeningWithoutCompanyOutputDTO from(JobOpening jobOpening){
         if(jobOpening == null) return null;
 
-        List<ApplicationQuestionDTO> questions = jobOpening.getQuestions() == null
+        List<ApplicationQuestionOutputDTO> questions = jobOpening.getQuestions() == null
             ? List.of()
             : jobOpening.getQuestions().stream()
                 .filter(Objects::nonNull)
-                .map(ApplicationQuestionDTO::from)
+                .map(ApplicationQuestionOutputDTO::from)
                 .toList();
 
         return new JobOpeningWithoutCompanyOutputDTO(
