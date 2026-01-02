@@ -23,7 +23,7 @@ public class CompanyOutputDTO {
         if(company == null) return null;
 
         List<String> categories = company.getCategories() == null
-            ? new ArrayList<>()
+            ? List.of()
             : company.getCategories().stream()
             .filter(Objects::nonNull)
             .map(Enum::name)

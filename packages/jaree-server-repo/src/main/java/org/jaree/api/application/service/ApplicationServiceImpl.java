@@ -1,7 +1,7 @@
 package org.jaree.api.application.service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.jaree.api.application.dto.ApplicationOutputDTO;
 import org.jaree.api.application.dto.ApplicationUpdateInputDTO;
@@ -37,38 +37,25 @@ public class ApplicationServiceImpl implements ApplicationService{
             throw new RuntimeException("User is not an owner of this application");
         }
 
-        if(dto.getTitle() != null){
-            application.setTitle(dto.getTitle());
-        }
-        if(dto.getPosition() != null){
-            application.setPosition(dto.getPosition());
-        }
-        if(dto.getStatus() != null){
-            application.setStatus(dto.getStatus());
-        }
-        if(dto.getDueAt() != null){
-            application.setDueAt(dto.getDueAt());
-        }
+        Optional.ofNullable(dto.getTitle()).ifPresent(application::setTitle);
+        Optional.ofNullable(dto.getPosition()).ifPresent(application::setPosition);
+        Optional.ofNullable(dto.getStatus()).ifPresent(application::setStatus);
+        Optional.ofNullable(dto.getDueAt()).ifPresent(application::setDueAt);
 
         /* questions */
         if(dto.getQuestions() != null){
-            List<ApplicationUpdateInputDTO.ApplicationQuestionDTO> inputQuestions = dto.getQuestions();
-            List<ApplicationQuestion> newQuestions = new ArrayList<>();
-
-            for(ApplicationUpdateInputDTO.ApplicationQuestionDTO qdto : inputQuestions){
-
-                if(qdto.getId() == null){
-                    ApplicationQuestion created = new ApplicationQuestion();
-                    created.setContent(qdto.getContent());
-                    created.setDescription(qdto.getDescription());
-                    created.setOrder(qdto.getOrder());
-                    newQuestions.add(created);
-                }else{
-                    ApplicationQuestion existing = applicationQuestionRepository.findById(qdto.getId())
-                        .orElseThrow(()-> new RuntimeException("ApplicationQuestion not found"));
-                    newQuestions.add(existing);
-                }
-            }
+            List<ApplicationQuestion> newQuestions =  dto.getQuestions().stream()
+                .map(qdto -> {
+                    if(qdto.getId() == null){
+                        return ApplicationQuestion.builder()
+                            .content(qdto.getContent())
+                            .description(qdto.getDescription())
+                            .order(qdto.getOrder())
+                            .build();
+                    }
+                    return applicationQuestionRepository.findById(qdto.getId())
+                        .orElseThrow(() -> new RuntimeException("ApplicationQuestion not found"));
+                }).toList();
             application.setQuestions(newQuestions);
         }
 
