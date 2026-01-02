@@ -53,7 +53,7 @@ public class ApplicationController {
         return ResponseEntity.ok(outputDTO);
     }
 
-    @PostMapping("/{applicationid}/commit")
+    @PostMapping("/{applicationId}/commit")
     public ResponseEntity<?> createApplicationVersion(
         @RequestBody ApplicationVersionCreationInputDTO dto,
         @AuthenticationPrincipal CustomUserDetails userDetails

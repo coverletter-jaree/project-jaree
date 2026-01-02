@@ -1,7 +1,7 @@
 package org.jaree.api.application.entity;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.jaree.api.application.enums.ApplicationStatus;
@@ -64,10 +64,10 @@ public class Application {
      * Custom Getters
      */
     public List<ApplicationQuestion> getQuestions() {
-        return questions == null ? Collections.emptyList() : questions;
+        return questions == null ? new ArrayList<>() : questions;
     }
 
     public List<ApplicationVersion> getVersions() {
-        return versions == null ? Collections.emptyList() : versions;
+        return versions == null ? new ArrayList<>() : versions;
     }
 }

@@ -12,16 +12,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ApplicationVersionRepository extends Neo4jRepository<ApplicationVersion, String> {
     @Query("""
-        MATCH (a:Application {id: 1})-[:HAS_VERSION]->(latest:ApplicationVersion)
-        OPTIONAL MATCH (latest)-[:CHANGED_FROM*0..]->(v:ApplicationVersion)
-        WITH DISTINCT v
-        OPTIONAL MATCH (v)-[:CHANGED_FROM]->(prev:ApplicationVersion)
-        RETURN v {.*, previousVersionId: prev.id} AS version
-        ORDER BY v.createdAt DESC
-    """)
-    List<ApplicationVersion> findAllVersionsByApplicationId(String appId);
-
-    @Query("""
         MATCH (a:Application {id: $applicationId})-[:HAS_VERSION]->(v:ApplicationVersion)
         OPTIONAL MATCH (v)-[ra:ANCESTOR_OF]->(anc:ApplicationVersion)
         OPTIONAL MATCH (v)-[r:ANSWERS]->(ans:ApplicationAnswer)

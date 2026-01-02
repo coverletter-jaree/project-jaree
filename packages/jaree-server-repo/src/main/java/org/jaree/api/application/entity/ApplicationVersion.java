@@ -1,7 +1,7 @@
 package org.jaree.api.application.entity;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
@@ -49,10 +49,10 @@ public class ApplicationVersion {
 
     // Setters
     public List<ApplicationAnswer> getAnswers() {
-        return answers == null ? Collections.emptyList() : answers;
+        return answers == null ? new ArrayList<>() : answers;
     }
 
     public List<ApplicationVersion> getAncestors() {
-        return ancestors == null ? Collections.emptyList() : ancestors;
+        return ancestors == null ? new ArrayList<>() : ancestors;
     }
 }

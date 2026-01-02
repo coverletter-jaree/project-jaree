@@ -48,7 +48,8 @@ public class ApplicationService {
      */
     public ApplicationVersionSimpleDTO getMostRecentApplicationVersion(String applicationId, CustomUserDetails userDetails) {
         User user = userRepository.findById(userDetails.id()).orElseThrow(UserNotFoundException::new);
-        Application application = applicationRepository.findById(applicationId).orElseThrow(ApplicationNotFoundException::new);
+        Application application = applicationRepository.findByIdAndUserId(applicationId, user.getId())
+            .orElseThrow(ApplicationNotFoundException::new);
 
         ApplicationVersion applicationVersion = applicationVersionRepository.findLatestByApplicationId(applicationId)
             .orElse(null);
@@ -61,7 +62,8 @@ public class ApplicationService {
      */
     public List<ApplicationVersionCommitMessageDTO> getApplicationVersionList(String applicationId, CustomUserDetails userDetails) {
         User user = userRepository.findById(userDetails.id()).orElseThrow(UserNotFoundException::new);
-        Application application = applicationRepository.findById(applicationId).orElseThrow(ApplicationNotFoundException::new);
+        Application application = applicationRepository.findByIdAndUserId(applicationId, user.getId())
+            .orElseThrow(ApplicationNotFoundException::new);
 
         List<ApplicationVersion> applicationVersionList = applicationVersionRepository.findByApplicationId(applicationId);
 
@@ -97,9 +99,12 @@ public class ApplicationService {
     @Transactional
     public ApplicationVersionSimpleDTO createApplicationVersion(ApplicationVersionCreationInputDTO dto, CustomUserDetails userDetails) {
         User user = userRepository.findById(userDetails.id()).orElseThrow(UserNotFoundException::new);
-        Application application = applicationRepository.findById(dto.getApplicationId()).orElseThrow(ApplicationNotFoundException::new);
+        Application application = applicationRepository.findByIdAndUserId(dto.getApplicationId(), user.getId())
+            .orElseThrow(ApplicationNotFoundException::new);
+
         ApplicationVersion applicationVersion = dto.toEntity();
 
+        // ancestor 설정
         if(dto.getPreviousVersionId() != null) {
             ApplicationVersion previousVersion = applicationVersionRepository.findById(dto.getPreviousVersionId())
                 .orElseThrow(ApplicationVersionNotFoundException::new);
@@ -110,6 +115,7 @@ public class ApplicationService {
             applicationVersion.setAncestors(ancestors);
         }
 
+        // answer 생성
         List<ApplicationAnswer> answers = new ArrayList<>();
         for(ApplicationAnswerCreationInputDTO answerDto: dto.getAnswers()) {
             ApplicationAnswer answer = answerDto.toEntity();
@@ -127,14 +133,16 @@ public class ApplicationService {
             answers.add(answer);
         }
 
+        // 커밋 저장
         applicationVersion.setAnswers(answers);
         applicationVersion.setApplication(application);
         applicationVersionRepository.save(applicationVersion);
 
+        // answer와 version 관계 설정
         for(ApplicationAnswer answer: answers) {
             answer.setApplicationVersion(applicationVersion);
-            applicationAnswerRepository.save(answer);
         }
+        applicationAnswerRepository.saveAll(answers);
 
         return ApplicationVersionSimpleDTO.of(applicationVersion);
     }
