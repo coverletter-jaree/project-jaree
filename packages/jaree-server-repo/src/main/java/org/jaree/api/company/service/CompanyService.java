@@ -4,6 +4,6 @@ import org.jaree.api.company.dto.CompanyWithJobOpeningsOutputDTO;
 
 public interface CompanyService {
 
-    CompanyWithJobOpeningsOutputDTO getCompanyInfo(Long id);
+    CompanyWithJobOpeningsOutputDTO getCompanyInfo(String id);
 
 }

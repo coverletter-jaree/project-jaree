@@ -19,7 +19,7 @@ public class CompanyController {
 
     @GetMapping("/{id}")
     public ResponseEntity<CompanyWithJobOpeningsOutputDTO> getCompanyInfoById(
-        @PathVariable Long id
+        @PathVariable String id
     ) {
         CompanyWithJobOpeningsOutputDTO result = companyService.getCompanyInfo(id);
         return ResponseEntity.ok(result);

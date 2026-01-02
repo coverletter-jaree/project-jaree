@@ -16,7 +16,7 @@ public class JobOpeningServiceImpl implements JobOpeningService {
     private final JobOpeningRepository jobOpeningRepository;
 
     @Override
-    public JobOpeningOutputDTO getJobOpeningInfo(Long id) {
+    public JobOpeningOutputDTO getJobOpeningInfo(String id) {
 
         JobOpening jobOpening = jobOpeningRepository.findByIdWithoutApplications(id)
             .orElseThrow(() -> new RuntimeException("JobOpening Not Found"));

@@ -13,7 +13,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class JobOpeningWithoutCompanyOutputDTO {
-    private Long id;
+    private String id;
     private String title;
     private String description;
     private String contentS3Url;
@@ -26,7 +26,7 @@ public class JobOpeningWithoutCompanyOutputDTO {
     @Getter
     @AllArgsConstructor
     public static class ApplicationQuestionDTO{
-        private Long id;
+        private String id;
         private String content;
         private String description;
         private Integer order;

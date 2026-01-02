@@ -19,7 +19,7 @@ public class JobOpeningController {
 
     @GetMapping("/{id}")
     public ResponseEntity<JobOpeningOutputDTO> getJobOpeningIfoById(
-        @PathVariable Long id
+        @PathVariable String id
     ){
         JobOpeningOutputDTO result = jobOpeningService.getJobOpeningInfo(id);
         return ResponseEntity.ok(result);

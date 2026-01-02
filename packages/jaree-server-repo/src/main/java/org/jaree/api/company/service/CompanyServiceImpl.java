@@ -16,7 +16,7 @@ public class CompanyServiceImpl implements CompanyService {
     private final CompanyRepository companyRepository;
 
     @Override
-    public CompanyWithJobOpeningsOutputDTO getCompanyInfo(Long id) {
+    public CompanyWithJobOpeningsOutputDTO getCompanyInfo(String id) {
 
         Company company = companyRepository.findByIdWithJobOpeningsWithQuestion(id)
             .orElseThrow(() -> new RuntimeException("Company not found"));
