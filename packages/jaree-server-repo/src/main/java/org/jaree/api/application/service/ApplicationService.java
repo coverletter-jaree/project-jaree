@@ -3,7 +3,6 @@ package org.jaree.api.application.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.jaree.api.application.dto.ApplicationAnswerCreationInputDTO;
 import org.jaree.api.application.dto.ApplicationCreationInputDTO;
 import org.jaree.api.application.dto.ApplicationOutputDTO;
@@ -17,6 +16,7 @@ import org.jaree.api.application.entity.ApplicationQuestion;
 import org.jaree.api.application.entity.ApplicationVersion;
 import org.jaree.api.application.exception.ApplicationNotFoundException;
 import org.jaree.api.application.exception.ApplicationVersionNotFoundException;
+import org.jaree.api.application.input.ApplicationContextSaveInputDTO;
 import org.jaree.api.application.repository.ApplicationAnswerRepository;
 import org.jaree.api.application.repository.ApplicationQuestionRepository;
 import org.jaree.api.application.repository.ApplicationRepository;
@@ -30,7 +30,6 @@ import org.jaree.api.user.exception.UserNotFoundException;
 import org.jaree.api.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -145,5 +144,50 @@ public class ApplicationService {
         applicationAnswerRepository.saveAll(answers);
 
         return ApplicationVersionSimpleDTO.of(applicationVersion);
+    }
+
+    public ApplicationVersion getApplication(String applicationId, String commitId) {
+        if (applicationId == null) {
+            throw new IllegalArgumentException("Application ID cannot be null");
+        }
+        Application application = applicationRepository.findById(applicationId)
+            .orElseThrow(() -> new IllegalArgumentException("Invalid ID: " + applicationId));
+
+        List<ApplicationVersion> applicationVersions = application.getVersions();
+        ApplicationVersion applicationVersion = applicationVersions.stream()
+            .filter(version -> version.getId().equals(commitId))
+            .findFirst()
+            .orElseThrow(() -> new IllegalArgumentException("Invalid commit ID: " + commitId));
+
+        return applicationVersion;
+    }
+
+    public boolean saveApplication(String applicationId, String commitId, ApplicationContextSaveInputDTO body) {
+        // TODO: convert to ApplicationContextSaveInputDTO to ApplicationAnswer
+        ApplicationAnswer applicationAnswer = new ApplicationAnswer();
+
+        // TODO: make ApplicationVersion with Answer
+        ApplicationVersion applicationVersion = new ApplicationVersion();
+        applicationVersion.setAnswers(List.of(applicationAnswer));
+        applicationVersion.setId(commitId);
+
+        // TODO: make Connection Version and Application
+        applicationVersionRepository.save(applicationVersion);
+        applicationAnswerRepository.save(applicationAnswer);
+
+
+        return true;
+    }
+
+    public List<Application> getApplications() {
+        return applicationRepository.findAll();
+    }
+
+    public boolean deleteApplication(String id) {
+        if (id == null) {
+            throw new IllegalArgumentException("ID cannot be null");
+        }
+        applicationRepository.deleteById(id);
+        return true;
     }
 }
