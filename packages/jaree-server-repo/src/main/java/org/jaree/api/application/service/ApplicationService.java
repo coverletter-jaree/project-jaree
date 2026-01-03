@@ -22,6 +22,8 @@ import org.jaree.api.application.repository.ApplicationQuestionRepository;
 import org.jaree.api.application.repository.ApplicationRepository;
 import org.jaree.api.application.repository.ApplicationVersionRepository;
 import org.jaree.api.auth.dto.CustomUserDetails;
+import org.jaree.api.core.interfaces.DTOConverter;
+import org.jaree.api.core.utils.JacksonDTOConverter;
 import org.jaree.api.jobopening.entity.JobOpening;
 import org.jaree.api.jobopening.exception.JobOpeningNotFoundException;
 import org.jaree.api.jobopening.repository.JobOpeningRepository;
@@ -41,6 +43,8 @@ public class ApplicationService {
     private final ApplicationQuestionRepository applicationQuestionRepository;
     private final ApplicationVersionRepository applicationVersionRepository;
     private final ApplicationAnswerRepository applicationAnswerRepository;
+
+    private final DTOConverter converter = new JacksonDTOConverter();
 
     /**
      * 특정 자소서의 가장 최근 커밋 조회
@@ -146,37 +150,45 @@ public class ApplicationService {
         return ApplicationVersionSimpleDTO.of(applicationVersion);
     }
 
-    public ApplicationVersion getApplication(String applicationId, String commitId) {
-        if (applicationId == null) {
-            throw new IllegalArgumentException("Application ID cannot be null");
+    public ApplicationVersion getApplicationVersion(String applicationId, String commitId) {
+        if (commitId == null) {
+            throw new IllegalArgumentException("Commit ID cannot be null");
         }
-        Application application = applicationRepository.findById(applicationId)
-            .orElseThrow(() -> new IllegalArgumentException("Invalid ID: " + applicationId));
+        ApplicationVersion applicationVersion = applicationVersionRepository.findById(commitId).get();
 
-        List<ApplicationVersion> applicationVersions = application.getVersions();
-        ApplicationVersion applicationVersion = applicationVersions.stream()
-            .filter(version -> version.getId().equals(commitId))
-            .findFirst()
-            .orElseThrow(() -> new IllegalArgumentException("Invalid commit ID: " + commitId));
+        if (!applicationVersion.getApplication().getId().equals(applicationId)) {
+            throw new IllegalArgumentException("Invalid application ID");
+        }
 
         return applicationVersion;
     }
 
-    public boolean saveApplication(String applicationId, String commitId, ApplicationContextSaveInputDTO body) {
-        // TODO: convert to ApplicationContextSaveInputDTO to ApplicationAnswer
-        ApplicationAnswer applicationAnswer = new ApplicationAnswer();
+    /**
+     * @author junhyeong
+     * 작업 중 필요하다고 생각되는 고려사항, 임시저장임을 나타내는 추가적인 스테이터스 필요함
+     */
+    public boolean saveAnswerTemporary(String applicationId, String commitId, ApplicationContextSaveInputDTO body) {
+        if (commitId == null) {
+            throw new IllegalArgumentException("Commit ID cannot be null");
+        }
+        ApplicationVersion applicationVersion = applicationVersionRepository.findById(commitId).get();
 
-        // TODO: make ApplicationVersion with Answer
-        ApplicationVersion applicationVersion = new ApplicationVersion();
-        applicationVersion.setAnswers(List.of(applicationAnswer));
-        applicationVersion.setId(commitId);
+        if (!applicationVersion.getApplication().getId().equals(applicationId)) {
+            throw new IllegalArgumentException("Invalid application ID");
+        }
 
-        // TODO: make Connection Version and Application
-        applicationVersionRepository.save(applicationVersion);
-        applicationAnswerRepository.save(applicationAnswer);
+        ApplicationQuestion applicationQuestion = applicationQuestionRepository.findById(body.getQuestion().getId()).get();
 
+        ApplicationAnswer applicationAnswer = this.converter.convert(body).applicationAnswer();
+        applicationAnswer.setQuestion(applicationQuestion);
+        applicationAnswer.setApplicationVersion(applicationVersion);
 
-        return true;
+        try {
+            applicationAnswerRepository.save(applicationAnswer);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public List<Application> getApplications(CustomUserDetails userDetails) {
