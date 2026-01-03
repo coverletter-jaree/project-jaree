@@ -10,9 +10,6 @@
       "path": "packages/jaree-client-repo"
     },
     {
-      "path": "packages/jaree-manifest-repo"
-    },
-    {
       "path": "packages/jaree-server-repo"
     }
   ],

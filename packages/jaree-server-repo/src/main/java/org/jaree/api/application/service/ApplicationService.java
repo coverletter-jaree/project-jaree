@@ -3,7 +3,6 @@ package org.jaree.api.application.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.jaree.api.application.dto.ApplicationAnswerCreationInputDTO;
 import org.jaree.api.application.dto.ApplicationCreationInputDTO;
 import org.jaree.api.application.dto.ApplicationOutputDTO;
@@ -17,11 +16,14 @@ import org.jaree.api.application.entity.ApplicationQuestion;
 import org.jaree.api.application.entity.ApplicationVersion;
 import org.jaree.api.application.exception.ApplicationNotFoundException;
 import org.jaree.api.application.exception.ApplicationVersionNotFoundException;
+import org.jaree.api.application.input.ApplicationContextSaveInputDTO;
 import org.jaree.api.application.repository.ApplicationAnswerRepository;
 import org.jaree.api.application.repository.ApplicationQuestionRepository;
 import org.jaree.api.application.repository.ApplicationRepository;
 import org.jaree.api.application.repository.ApplicationVersionRepository;
 import org.jaree.api.auth.dto.CustomUserDetails;
+import org.jaree.api.core.interfaces.DTOConverter;
+import org.jaree.api.core.utils.JacksonDTOConverter;
 import org.jaree.api.jobopening.entity.JobOpening;
 import org.jaree.api.jobopening.exception.JobOpeningNotFoundException;
 import org.jaree.api.jobopening.repository.JobOpeningRepository;
@@ -30,7 +32,6 @@ import org.jaree.api.user.exception.UserNotFoundException;
 import org.jaree.api.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -42,6 +43,8 @@ public class ApplicationService {
     private final ApplicationQuestionRepository applicationQuestionRepository;
     private final ApplicationVersionRepository applicationVersionRepository;
     private final ApplicationAnswerRepository applicationAnswerRepository;
+
+    private final DTOConverter converter = new JacksonDTOConverter();
 
     /**
      * 특정 자소서의 가장 최근 커밋 조회
@@ -145,5 +148,62 @@ public class ApplicationService {
         applicationAnswerRepository.saveAll(answers);
 
         return ApplicationVersionSimpleDTO.of(applicationVersion);
+    }
+
+    public ApplicationVersion getApplicationVersion(String applicationId, String commitId) {
+        if (commitId == null) {
+            throw new IllegalArgumentException("Commit ID cannot be null");
+        }
+        ApplicationVersion applicationVersion = applicationVersionRepository.findById(commitId).get();
+
+        if (!applicationVersion.getApplication().getId().equals(applicationId)) {
+            throw new IllegalArgumentException("Invalid application ID");
+        }
+
+        return applicationVersion;
+    }
+
+    /**
+     * @author junhyeong
+     * 작업 중 필요하다고 생각되는 고려사항, 임시저장임을 나타내는 추가적인 스테이터스 필요함
+     */
+    public boolean saveAnswerTemporary(String applicationId, String commitId, ApplicationContextSaveInputDTO body) {
+        if (commitId == null) {
+            throw new IllegalArgumentException("Commit ID cannot be null");
+        }
+        ApplicationVersion applicationVersion = applicationVersionRepository.findById(commitId).get();
+
+        if (!applicationVersion.getApplication().getId().equals(applicationId)) {
+            throw new IllegalArgumentException("Invalid application ID");
+        }
+
+        ApplicationQuestion applicationQuestion = applicationQuestionRepository.findById(body.getQuestion().getId()).get();
+
+        ApplicationAnswer applicationAnswer = this.converter.convert(body).applicationAnswer();
+        applicationAnswer.setQuestion(applicationQuestion);
+        applicationAnswer.setApplicationVersion(applicationVersion);
+
+        try {
+            applicationAnswerRepository.save(applicationAnswer);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public List<Application> getApplications(CustomUserDetails userDetails) {
+        return applicationRepository.findAllByUserId(userDetails.id()).get();
+    }
+
+    public boolean deleteApplication(String id) {
+        if (id == null) {
+            throw new IllegalArgumentException("ID cannot be null");
+        }
+        try {
+            applicationRepository.deleteById(id);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }
