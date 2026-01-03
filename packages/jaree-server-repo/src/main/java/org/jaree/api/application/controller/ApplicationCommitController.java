@@ -28,6 +28,7 @@ public class ApplicationCommitController {
         @PathVariable("commitId") String commitId
     ) {
         ApplicationVersion applicationVersion = applicationService.getApplication(applicationId, commitId);
+
         return ResponseEntity.ok().build();
     }
 

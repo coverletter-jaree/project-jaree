@@ -179,15 +179,19 @@ public class ApplicationService {
         return true;
     }
 
-    public List<Application> getApplications() {
-        return applicationRepository.findAll();
+    public List<Application> getApplications(CustomUserDetails userDetails) {
+        return applicationRepository.findAllByUserId(userDetails.id()).get();
     }
 
     public boolean deleteApplication(String id) {
         if (id == null) {
             throw new IllegalArgumentException("ID cannot be null");
         }
-        applicationRepository.deleteById(id);
-        return true;
+        try {
+            applicationRepository.deleteById(id);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

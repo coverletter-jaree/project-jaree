@@ -1,6 +1,7 @@
 package org.jaree.api.application.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import org.jaree.api.application.dto.ApplicationCreationInputDTO;
 import org.jaree.api.application.dto.ApplicationOutputDTO;
 import org.jaree.api.application.dto.ApplicationVersionCommitMessageDTO;
@@ -10,6 +11,8 @@ import org.jaree.api.application.entity.Application;
 import org.jaree.api.application.output.ApplicationListOutputDTOItem;
 import org.jaree.api.application.service.ApplicationService;
 import org.jaree.api.auth.dto.CustomUserDetails;
+import org.jaree.api.core.interfaces.DTOConverter;
+import org.jaree.api.core.utils.JacksonDTOConverter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -27,6 +30,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/application")
 public class ApplicationController {
     private final ApplicationService applicationService;
+    private final DTOConverter converter = new JacksonDTOConverter();
 
     @GetMapping("/{applicationId}")
     public ResponseEntity<?> getMostRecentApplicationVersion(
@@ -66,9 +70,15 @@ public class ApplicationController {
 
     @GetMapping()
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<List<ApplicationListOutputDTOItem>> getApplications() {
-        List<Application> applications = applicationService.getApplications();
-        return ResponseEntity.ok().build();
+    public ResponseEntity<List<ApplicationListOutputDTOItem>> getApplications(
+        @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
+        List<Application> applications = this.applicationService.getApplications(userDetails);
+
+        List<ApplicationListOutputDTOItem.EntityRecord> entityRecord = applications.stream().map(ApplicationListOutputDTOItem.EntityRecord::new).collect(Collectors.toList());
+        List<ApplicationListOutputDTOItem> outputDTO = this.converter.convert(entityRecord);
+
+        return ResponseEntity.ok(outputDTO);
     }
 
     @DeleteMapping("/{id}")
