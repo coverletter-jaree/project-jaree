@@ -15,6 +15,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 /**
  * ApplicationVersion: 자소서 커밋(자소서 버전) 엔티티
  * - 자소서의 특정 버전을 기록한 커밋을 의미함
