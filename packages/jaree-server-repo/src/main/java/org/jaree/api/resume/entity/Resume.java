@@ -33,4 +33,4 @@ public class Resume {
 
     @Relationship(direction = Relationship.Direction.OUTGOING)
     private List<ResumeRelationship> data;     // 이력서 저장 데이터(내용) 목록
-}
+    }

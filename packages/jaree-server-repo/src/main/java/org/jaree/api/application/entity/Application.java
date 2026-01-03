@@ -1,6 +1,7 @@
 package org.jaree.api.application.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.jaree.api.application.enums.ApplicationStatus;
@@ -58,4 +59,15 @@ public class Application {
 
     @Relationship(type = "HAS_VERSION", direction = Relationship.Direction.OUTGOING)
     private List<ApplicationVersion> versions;  // 자소서 커밋 리스트(leaf node가 여러개일 수 있기 때문에 list)
+
+    /*
+     * Custom Getters
+     */
+    public List<ApplicationQuestion> getQuestions() {
+        return questions == null ? new ArrayList<>() : questions;
+    }
+
+    public List<ApplicationVersion> getVersions() {
+        return versions == null ? new ArrayList<>() : versions;
+    }
 }
