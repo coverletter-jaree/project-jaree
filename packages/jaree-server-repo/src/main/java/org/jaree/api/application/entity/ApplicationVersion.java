@@ -1,6 +1,7 @@
 package org.jaree.api.application.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
@@ -9,11 +10,6 @@ import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
 import org.springframework.data.neo4j.core.support.UUIDStringGenerator;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -44,4 +40,19 @@ public class ApplicationVersion {
 
     @Relationship(type = "ANSWERS", direction = Relationship.Direction.OUTGOING)
     private List<ApplicationAnswer> answers;        // 해당 버전에서 작성한 답변 리스트
+
+    @Relationship(type = "ANCESTOR_OF", direction = Relationship.Direction.OUTGOING)
+    private List<ApplicationVersion> ancestors;
+
+    @Relationship(type = "HAS_VERSION", direction = Relationship.Direction.INCOMING)
+    private Application application;
+
+    // Setters
+    public List<ApplicationAnswer> getAnswers() {
+        return answers == null ? new ArrayList<>() : answers;
+    }
+
+    public List<ApplicationVersion> getAncestors() {
+        return ancestors == null ? new ArrayList<>() : ancestors;
+    }
 }
