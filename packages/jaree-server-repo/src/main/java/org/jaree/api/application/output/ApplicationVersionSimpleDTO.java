@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.jaree.api.application.dto.ApplicationAnswerSimpleDTO;
 import org.jaree.api.application.entity.ApplicationVersion;
 
 import lombok.AllArgsConstructor;

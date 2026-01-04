@@ -6,7 +6,8 @@ import java.util.Objects;
 
 import org.jaree.api.application.entity.Application;
 import org.jaree.api.application.enums.ApplicationStatus;
-import org.jaree.api.jobopening.dto.JobOpeningWithoutApplicationsAndQuestionsDTO;
+import org.jaree.api.company.output.CompanyOutputDTO;
+import org.jaree.api.jobopening.entity.JobOpening;
 import org.jaree.api.user.entity.User;
 
 import lombok.AllArgsConstructor;
@@ -43,6 +44,35 @@ public class ApplicationOutputDTO {
             if(user == null) return null;
 
             return new UserOutputDTO(user.getId(), user.getName(), user.getCreatedAt());
+        }
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class JobOpeningWithoutApplicationsAndQuestionsDTO {
+        private String id;
+        private String title;
+        private String description;
+        private String contentS3Url;
+        private String imageUrl;
+        private LocalDateTime startsAt;
+        private LocalDateTime endsAt;
+        private LocalDateTime createdAt;
+        private CompanyOutputDTO company;
+
+        public static JobOpeningWithoutApplicationsAndQuestionsDTO from(
+            JobOpening jobOpening){
+            if(jobOpening == null) return null;
+
+            CompanyOutputDTO company = CompanyOutputDTO.from(jobOpening.getCompany());
+
+            return new JobOpeningWithoutApplicationsAndQuestionsDTO(
+                jobOpening.getId(), jobOpening.getTitle(),
+                jobOpening.getDescription(), jobOpening.getContentS3Url(),
+                jobOpening.getImageUrl(), jobOpening.getStartsAt(),
+                jobOpening.getEndsAt(), jobOpening.getCreatedAt(),
+                company
+            );
         }
     }
 
