@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.jaree.api.application.exception.ApplicationQuestionNotFoundException;
 import org.jaree.api.application.input.ApplicationAnswerCreationInputDTO;
 import org.jaree.api.application.input.ApplicationCreationInputDTO;
 import org.jaree.api.application.output.ApplicationOutputDTO;
@@ -156,11 +157,10 @@ public class ApplicationService implements ApplicationServiceInterface {
     public ApplicationOutputDTO updateApplicationInfo(String id, CustomUserDetails user,
         ApplicationUpdateInputDTO dto) {
 
-        Application application = applicationRepository.findById(id)
-            .orElseThrow(()-> new RuntimeException("Application not found"));
+        Application application = applicationRepository.findById(id).orElseThrow(ApplicationNotFoundException::new);
 
         if(!application.getUser().getId().equals(user.id())){
-            throw new RuntimeException("User is not an owner of this application");
+            throw new ApplicationNotFoundException();
         }
 
         Optional.ofNullable(dto.getTitle()).ifPresent(application::setTitle);
@@ -179,8 +179,7 @@ public class ApplicationService implements ApplicationServiceInterface {
                             .order(qdto.getOrder())
                             .build();
                     }
-                    return applicationQuestionRepository.findById(qdto.getId())
-                        .orElseThrow(() -> new RuntimeException("ApplicationQuestion not found"));
+                    return applicationQuestionRepository.findById(qdto.getId()).orElseThrow(ApplicationQuestionNotFoundException::new);
                 }).toList();
             application.setQuestions(newQuestions);
         }
@@ -191,8 +190,7 @@ public class ApplicationService implements ApplicationServiceInterface {
             if(inputJobOpeningId == null){
                 application.setJobOpening(null);
             }else{
-                JobOpening jobOpening = jobOpeningRepository.findById(inputJobOpeningId)
-                    .orElseThrow(()-> new RuntimeException("JobOpening not found"));
+                JobOpening jobOpening = jobOpeningRepository.findById(inputJobOpeningId).orElseThrow(JobOpeningNotFoundException::new);
                 application.setJobOpening(jobOpening);
             }
         }

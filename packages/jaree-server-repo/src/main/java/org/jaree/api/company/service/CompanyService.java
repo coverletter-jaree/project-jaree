@@ -1,5 +1,6 @@
 package org.jaree.api.company.service;
 
+import org.jaree.api.company.exception.CompanyNotFoundException;
 import org.jaree.api.company.output.CompanyWithJobOpeningsOutputDTO;
 import org.jaree.api.company.entity.Company;
 import org.jaree.api.company.repository.CompanyRepository;
@@ -18,8 +19,7 @@ public class CompanyService implements CompanyServiceInterface {
     @Override
     public CompanyWithJobOpeningsOutputDTO getCompanyInfo(String id) {
 
-        Company company = companyRepository.findByIdWithJobOpeningsWithQuestion(id)
-            .orElseThrow(() -> new RuntimeException("Company not found"));
+        Company company = companyRepository.findByIdWithJobOpeningsWithQuestion(id).orElseThrow(CompanyNotFoundException::new);
 
         return CompanyWithJobOpeningsOutputDTO.from(company);
     }

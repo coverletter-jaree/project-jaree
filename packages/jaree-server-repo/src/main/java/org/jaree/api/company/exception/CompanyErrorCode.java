@@ -1,4 +1,4 @@
-package org.jaree.api.jobopening.exception;
+package org.jaree.api.company.exception;
 
 import org.jaree.api.common.exception.ErrorCode;
 import org.springframework.http.HttpStatus;
@@ -8,8 +8,8 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum JobOpeningErrorCode implements ErrorCode {
-    JOB_OPENING_NOT_FOUND(HttpStatus.NOT_FOUND, "JobOpening_404_1", "JobOpening not found");
+public enum CompanyErrorCode implements ErrorCode {
+    COMPANY_NOT_FOUND(HttpStatus.NOT_FOUND, "COMPANY_404_1", "Company not found");
 
     private final HttpStatus httpStatus;
     private final String code;

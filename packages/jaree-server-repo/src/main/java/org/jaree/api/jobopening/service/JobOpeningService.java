@@ -1,5 +1,6 @@
 package org.jaree.api.jobopening.service;
 
+import org.jaree.api.jobopening.exception.JobOpeningNotFoundException;
 import org.jaree.api.jobopening.output.JobOpeningOutputDTO;
 import org.jaree.api.jobopening.entity.JobOpening;
 import org.jaree.api.jobopening.repository.JobOpeningRepository;
@@ -18,8 +19,7 @@ public class JobOpeningService implements JobOpeningServiceInterface {
     @Override
     public JobOpeningOutputDTO getJobOpeningInfo(String id) {
 
-        JobOpening jobOpening = jobOpeningRepository.findByIdWithoutApplications(id)
-            .orElseThrow(() -> new RuntimeException("JobOpening Not Found"));
+        JobOpening jobOpening = jobOpeningRepository.findByIdWithoutApplications(id).orElseThrow(JobOpeningNotFoundException::new);
 
         return JobOpeningOutputDTO.from(jobOpening);
     }
