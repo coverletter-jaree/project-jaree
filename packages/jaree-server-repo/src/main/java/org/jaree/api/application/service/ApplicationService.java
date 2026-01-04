@@ -37,7 +37,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class ApplicationService {
+public class ApplicationService implements ApplicationServiceInterface {
     private final ApplicationRepository applicationRepository;
     private final UserRepository userRepository;
     private final JobOpeningRepository jobOpeningRepository;
@@ -149,6 +149,9 @@ public class ApplicationService {
         return ApplicationVersionSimpleDTO.of(applicationVersion);
     }
 
+    /**
+     * 자소서 기본 정보 수정
+     */
     @Transactional
     public ApplicationOutputDTO updateApplicationInfo(String id, CustomUserDetails user,
         ApplicationUpdateInputDTO dto) {

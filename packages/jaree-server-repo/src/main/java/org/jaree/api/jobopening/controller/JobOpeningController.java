@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/job-opening")
+@RequestMapping("/job-opening")
 public class JobOpeningController {
 
     private final JobOpeningService jobOpeningService;

@@ -1,9 +1,26 @@
 package org.jaree.api.company.service;
 
 import org.jaree.api.company.dto.CompanyWithJobOpeningsOutputDTO;
+import org.jaree.api.company.entity.Company;
+import org.jaree.api.company.repository.CompanyRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-public interface CompanyService {
+import lombok.RequiredArgsConstructor;
 
-    CompanyWithJobOpeningsOutputDTO getCompanyInfo(String id);
+@Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
+public class CompanyService implements CompanyServiceInterface {
 
+    private final CompanyRepository companyRepository;
+
+    @Override
+    public CompanyWithJobOpeningsOutputDTO getCompanyInfo(String id) {
+
+        Company company = companyRepository.findByIdWithJobOpeningsWithQuestion(id)
+            .orElseThrow(() -> new RuntimeException("Company not found"));
+
+        return CompanyWithJobOpeningsOutputDTO.from(company);
+    }
 }
