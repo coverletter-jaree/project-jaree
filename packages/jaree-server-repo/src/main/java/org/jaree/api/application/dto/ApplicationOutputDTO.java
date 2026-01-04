@@ -10,8 +10,14 @@ import org.jaree.api.jobopening.dto.JobOpeningWithoutApplicationsAndQuestionsDTO
 import org.jaree.api.user.entity.User;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.Getter;
 
+@Data
+@Builder
+@NoArgsConstructor
 @Getter
 @AllArgsConstructor
 public class ApplicationOutputDTO {

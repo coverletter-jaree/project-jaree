@@ -1,6 +1,7 @@
 package org.jaree.api.application.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
@@ -39,4 +40,19 @@ public class ApplicationVersion {
 
     @Relationship(type = "ANSWERS", direction = Relationship.Direction.OUTGOING)
     private List<ApplicationAnswer> answers;        // 해당 버전에서 작성한 답변 리스트
+
+    @Relationship(type = "ANCESTOR_OF", direction = Relationship.Direction.OUTGOING)
+    private List<ApplicationVersion> ancestors;
+
+    @Relationship(type = "HAS_VERSION", direction = Relationship.Direction.INCOMING)
+    private Application application;
+
+    // Setters
+    public List<ApplicationAnswer> getAnswers() {
+        return answers == null ? new ArrayList<>() : answers;
+    }
+
+    public List<ApplicationVersion> getAncestors() {
+        return ancestors == null ? new ArrayList<>() : ancestors;
+    }
 }
