@@ -1,6 +1,6 @@
 package org.jaree.api.company.service;
 
-import org.jaree.api.company.dto.CompanyWithJobOpeningsOutputDTO;
+import org.jaree.api.company.output.CompanyWithJobOpeningsOutputDTO;
 import org.jaree.api.company.entity.Company;
 import org.jaree.api.company.repository.CompanyRepository;
 import org.springframework.stereotype.Service;

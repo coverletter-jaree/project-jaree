@@ -1,4 +1,4 @@
-package org.jaree.api.application.dto;
+package org.jaree.api.application.output;
 
 import org.jaree.api.application.entity.ApplicationQuestion;
 

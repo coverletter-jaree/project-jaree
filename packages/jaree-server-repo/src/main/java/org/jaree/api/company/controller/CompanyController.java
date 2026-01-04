@@ -1,6 +1,6 @@
 package org.jaree.api.company.controller;
 
-import org.jaree.api.company.dto.CompanyWithJobOpeningsOutputDTO;
+import org.jaree.api.company.output.CompanyWithJobOpeningsOutputDTO;
 import org.jaree.api.company.service.CompanyService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

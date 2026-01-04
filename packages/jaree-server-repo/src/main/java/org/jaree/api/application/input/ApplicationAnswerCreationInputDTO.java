@@ -1,5 +1,6 @@
-package org.jaree.api.application.dto;
+package org.jaree.api.application.input;
 
+import org.jaree.api.application.dto.ApplicationQuestionSimpleDTO;
 import org.jaree.api.application.entity.ApplicationAnswer;
 
 import lombok.AllArgsConstructor;

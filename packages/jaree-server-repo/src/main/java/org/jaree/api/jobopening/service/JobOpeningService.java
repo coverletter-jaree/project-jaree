@@ -1,6 +1,6 @@
 package org.jaree.api.jobopening.service;
 
-import org.jaree.api.jobopening.dto.JobOpeningOutputDTO;
+import org.jaree.api.jobopening.output.JobOpeningOutputDTO;
 import org.jaree.api.jobopening.entity.JobOpening;
 import org.jaree.api.jobopening.repository.JobOpeningRepository;
 import org.springframework.stereotype.Service;

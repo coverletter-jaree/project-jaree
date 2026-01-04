@@ -1,4 +1,4 @@
-package org.jaree.api.company.dto;
+package org.jaree.api.company.output;
 
 import java.util.List;
 import java.util.Objects;

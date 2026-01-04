@@ -1,10 +1,10 @@
-package org.jaree.api.company.dto;
+package org.jaree.api.company.output;
 
 import java.util.List;
 import java.util.Objects;
 
 import org.jaree.api.company.entity.Company;
-import org.jaree.api.jobopening.dto.JobOpeningWithoutCompanyOutputDTO;
+import org.jaree.api.jobopening.output.JobOpeningWithoutCompanyOutputDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

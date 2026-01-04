@@ -2,12 +2,12 @@ package org.jaree.api.application.controller;
 
 import java.util.List;
 
-import org.jaree.api.application.dto.ApplicationCreationInputDTO;
-import org.jaree.api.application.dto.ApplicationOutputDTO;
-import org.jaree.api.application.dto.ApplicationUpdateInputDTO;
-import org.jaree.api.application.dto.ApplicationVersionCommitMessageDTO;
-import org.jaree.api.application.dto.ApplicationVersionCreationInputDTO;
-import org.jaree.api.application.dto.ApplicationVersionSimpleDTO;
+import org.jaree.api.application.input.ApplicationCreationInputDTO;
+import org.jaree.api.application.output.ApplicationOutputDTO;
+import org.jaree.api.application.input.ApplicationUpdateInputDTO;
+import org.jaree.api.application.output.ApplicationVersionCommitMessageDTO;
+import org.jaree.api.application.input.ApplicationVersionCreationInputDTO;
+import org.jaree.api.application.output.ApplicationVersionSimpleDTO;
 import org.jaree.api.application.service.ApplicationService;
 import org.jaree.api.auth.dto.CustomUserDetails;
 import org.springframework.http.ResponseEntity;

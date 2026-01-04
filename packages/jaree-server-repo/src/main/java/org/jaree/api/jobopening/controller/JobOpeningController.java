@@ -1,6 +1,6 @@
 package org.jaree.api.jobopening.controller;
 
-import org.jaree.api.jobopening.dto.JobOpeningOutputDTO;
+import org.jaree.api.jobopening.output.JobOpeningOutputDTO;
 import org.jaree.api.jobopening.service.JobOpeningService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

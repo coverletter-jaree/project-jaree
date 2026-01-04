@@ -1,4 +1,4 @@
-package org.jaree.api.application.dto;
+package org.jaree.api.application.input;
 
 import org.jaree.api.application.entity.Application;
 import org.jaree.api.application.enums.ApplicationStatus;

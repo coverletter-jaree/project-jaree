@@ -1,6 +1,6 @@
 package org.jaree.api.jobopening.service;
 
-import org.jaree.api.jobopening.dto.JobOpeningOutputDTO;
+import org.jaree.api.jobopening.output.JobOpeningOutputDTO;
 
 public interface JobOpeningServiceInterface {
 

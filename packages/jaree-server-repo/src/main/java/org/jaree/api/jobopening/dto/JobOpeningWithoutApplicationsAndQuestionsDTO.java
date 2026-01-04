@@ -2,7 +2,7 @@ package org.jaree.api.jobopening.dto;
 
 import java.time.LocalDateTime;
 
-import org.jaree.api.company.dto.CompanyOutputDTO;
+import org.jaree.api.company.output.CompanyOutputDTO;
 import org.jaree.api.jobopening.entity.JobOpening;
 
 import lombok.AllArgsConstructor;

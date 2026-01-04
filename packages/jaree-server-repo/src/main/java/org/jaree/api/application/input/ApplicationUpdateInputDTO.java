@@ -1,4 +1,4 @@
-package org.jaree.api.application.dto;
+package org.jaree.api.application.input;
 
 import java.time.LocalDateTime;
 import java.util.List;
