@@ -1,7 +1,8 @@
-package org.jaree.api.application.dto;
+package org.jaree.api.application.output;
 
 import java.time.LocalDateTime;
 
+import org.jaree.api.application.dto.ApplicationQuestionSimpleDTO;
 import org.jaree.api.application.entity.ApplicationAnswer;
 
 import lombok.AllArgsConstructor;

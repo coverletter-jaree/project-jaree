@@ -1,4 +1,4 @@
-package org.jaree.api.application.dto;
+package org.jaree.api.application.output;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,23 +15,27 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ApplicationVersionCommitMessageDTO {
+public class ApplicationVersionSimpleDTO {
     private String id;
     private String commitMessage;
     private LocalDateTime createdAt;
     private List<String> ancestorIds;
+    private List<ApplicationAnswerSimpleDTO> answers;
 
-    public static ApplicationVersionCommitMessageDTO of(ApplicationVersion applicationVersion) {
+    public static ApplicationVersionSimpleDTO of(ApplicationVersion applicationVersion) {
         if (applicationVersion == null) {
             return null;
         }
 
-        return ApplicationVersionCommitMessageDTO.builder()
+        return ApplicationVersionSimpleDTO.builder()
             .id(applicationVersion.getId())
             .commitMessage(applicationVersion.getCommitMessage())
             .createdAt(applicationVersion.getCreatedAt())
             .ancestorIds(applicationVersion.getAncestors().stream()
                 .map(ApplicationVersion::getId)
+                .collect(Collectors.toList()))
+            .answers(applicationVersion.getAnswers().stream()
+                .map(ApplicationAnswerSimpleDTO::of)
                 .collect(Collectors.toList()))
             .build();
     }

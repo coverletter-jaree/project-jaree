@@ -2,15 +2,18 @@ package org.jaree.api.application.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.jaree.api.application.dto.ApplicationAnswerCreationInputDTO;
-import org.jaree.api.application.dto.ApplicationCreationInputDTO;
-import org.jaree.api.application.dto.ApplicationOutputDTO;
+import org.jaree.api.application.exception.ApplicationQuestionNotFoundException;
+import org.jaree.api.application.input.ApplicationAnswerCreationInputDTO;
+import org.jaree.api.application.input.ApplicationCreationInputDTO;
+import org.jaree.api.application.output.ApplicationOutputDTO;
 import org.jaree.api.application.dto.ApplicationQuestionSimpleDTO;
-import org.jaree.api.application.dto.ApplicationVersionCommitMessageDTO;
-import org.jaree.api.application.dto.ApplicationVersionCreationInputDTO;
-import org.jaree.api.application.dto.ApplicationVersionSimpleDTO;
+import org.jaree.api.application.input.ApplicationUpdateInputDTO;
+import org.jaree.api.application.output.ApplicationVersionCommitMessageDTO;
+import org.jaree.api.application.input.ApplicationVersionCreationInputDTO;
+import org.jaree.api.application.output.ApplicationVersionSimpleDTO;
 import org.jaree.api.application.entity.Application;
 import org.jaree.api.application.entity.ApplicationAnswer;
 import org.jaree.api.application.entity.ApplicationQuestion;
@@ -35,7 +38,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class ApplicationService {
+public class ApplicationService implements ApplicationServiceInterface {
     private final ApplicationRepository applicationRepository;
     private final UserRepository userRepository;
     private final JobOpeningRepository jobOpeningRepository;
@@ -90,7 +93,7 @@ public class ApplicationService {
 
         applicationRepository.save(application);
 
-        return ApplicationOutputDTO.of(application);
+        return ApplicationOutputDTO.from(application);
     }
 
     /**
@@ -145,5 +148,53 @@ public class ApplicationService {
         applicationAnswerRepository.saveAll(answers);
 
         return ApplicationVersionSimpleDTO.of(applicationVersion);
+    }
+
+    /**
+     * 자소서 기본 정보 수정
+     */
+    @Transactional
+    public ApplicationOutputDTO updateApplicationInfo(String id, CustomUserDetails user,
+        ApplicationUpdateInputDTO dto) {
+
+        Application application = applicationRepository.findById(id).orElseThrow(ApplicationNotFoundException::new);
+
+        if(!application.getUser().getId().equals(user.id())){
+            throw new ApplicationNotFoundException();
+        }
+
+        Optional.ofNullable(dto.getTitle()).ifPresent(application::setTitle);
+        Optional.ofNullable(dto.getPosition()).ifPresent(application::setPosition);
+        Optional.ofNullable(dto.getStatus()).ifPresent(application::setStatus);
+        Optional.ofNullable(dto.getDueAt()).ifPresent(application::setDueAt);
+
+        /* questions */
+        if(dto.getQuestions() != null){
+            List<ApplicationQuestion> newQuestions =  dto.getQuestions().stream()
+                .map(qdto -> {
+                    if(qdto.getId() == null){
+                        return ApplicationQuestion.builder()
+                            .content(qdto.getContent())
+                            .description(qdto.getDescription())
+                            .order(qdto.getOrder())
+                            .build();
+                    }
+                    return applicationQuestionRepository.findById(qdto.getId()).orElseThrow(ApplicationQuestionNotFoundException::new);
+                }).toList();
+            application.setQuestions(newQuestions);
+        }
+
+        /* jobOpening */
+        if(dto.getJobOpening() != null){
+            String inputJobOpeningId = dto.getJobOpening().getId();
+            if(inputJobOpeningId == null){
+                application.setJobOpening(null);
+            }else{
+                JobOpening jobOpening = jobOpeningRepository.findById(inputJobOpeningId).orElseThrow(JobOpeningNotFoundException::new);
+                application.setJobOpening(jobOpening);
+            }
+        }
+
+        return ApplicationOutputDTO.from(applicationRepository.save(application));
     }
 }
