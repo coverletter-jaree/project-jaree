@@ -5,7 +5,6 @@ import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.RelationshipProperties;
 import org.springframework.data.neo4j.core.schema.TargetNode;
-import org.springframework.data.neo4j.core.support.UUIDStringGenerator;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 @RelationshipProperties
 public class ResumeRelationship {
     @Id
-    @GeneratedValue(generatorClass = UUIDStringGenerator.class)
+    @GeneratedValue
     private String id;
 
     private final ResumeRelationshipType type;  // 관계 종류 (이력서 항목)
